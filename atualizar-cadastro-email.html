@@ -1,0 +1,20 @@
+<form id="form-email" action="crud" method="post" enctype="multipart/form-data">
+    <input type="hidden" name="opcao" value="u2">
+    <div class="row">
+        <div class="form-group required mb-3 col-sm-12 col-md-12 col-lg-3">
+            <label for="email" class="control-label">E-mail</label>
+            <input type="email" class="form-control" id="email" name="email" placeholder="usuario@dominio.com"
+                maxlength="254" autocomplete="email" required>
+        </div>
+    </div>
+    <div class="row">
+        <div class="text-center col-sm-12 col-md-12 col-lg-3">
+            <div class="alert-feedback alert alert-warning" role="alert"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group text-end col-sm-12 col-md-12 col-lg-3">
+            <button type="submit" class="btn btn-primary">Atualizar</button>
+        </div>
+    </div>
+</form>

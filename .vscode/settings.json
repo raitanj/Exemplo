@@ -1,0 +1,22 @@
+{
+    "JSObfuscator.filesToIgnore": "moment.js",
+    "JSObfuscator.javascript-obfuscator": {
+        "compact": true,
+        "controlFlowFlattening": true,
+        "deadCodeInjection": true,
+        "debugProtection": true,
+        "debugProtectionInterval": false,
+        "disableConsoleOutput": true,
+        "identifierNamesGenerator": "hexadecimal",
+        "log": false,
+        "renameGlobals": false,
+        "rotateStringArray": true,
+        "selfDefending": true,
+        "shuffleStringArray": true,
+        "splitStrings": true,
+        "stringArray": true,
+        "stringArrayEncoding": ["base64"],
+        "stringArrayThreshold": 0.75,
+        "unicodeEscapeSequence": false
+    }
+}

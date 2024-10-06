@@ -1,0 +1,61 @@
+<div class="border border-1 p-3">
+    <form id="form-dados-gerais" action="crud" method="post" enctype="multipart/form-data">
+        <input type="hidden" name="opcao" value="u1">
+        <div class="row">
+            <label for="imagem">
+                <img src="Imagens/Sistema/User.png" class="rounded-circle" alt="Imagem de usuário" id="imagem-previa"
+                    width="220" height="180" />
+            </label>
+            <div class="form-group mb-3 col-sm-12 mt-2">
+                <label for="imagem" class="control-label">Imagem</label>
+                <input type="file" class="form-control" id="imagem" name="imagem" accept="image/*">
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group mb-3 col-sm-4">
+                <label for="cpf" class="control-label">CPF</label>
+                <input type="text" class="form-control" id="cpf" name="cpf" maxlength="11" disabled>
+            </div>
+            <div class="form-group mb-3 col-sm-4">
+                <label for="siape" class="control-label">Siape</label>
+                <input type="text" class="form-control" id="siape" name="siape" maxlength="7" disabled>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group d-grid mb-3 col-sm-8">
+                <label for="sexo-masculino" class="control-label">Sexo</label>
+                <div class="container d-flex g-0">
+                    <div class="form-check form-check-inline">
+                        <input type="radio" class="form-check-input" id="sexo-masculino" name="sexo" value="M">
+                        <label class="form-check-label" for="sexo-masculino">Masculino</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input type="radio" class="form-check-input" id="sexo-feminino" name="sexo" value="F">
+                        <label class="form-check-label" for="sexo-feminino">Feminino</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input type="radio" class="form-check-input" id="sexo-outro" name="sexo" value="O">
+                        <label class="form-check-label" for="sexo-outro">Outro</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group required mb-3 col-sm-8">
+                <label for="nome" class="control-label">Nome Completo</label>
+                <input type="text" class="form-control" id="nome" name="nome" placeholder="João" maxlength="60"
+                    required>
+            </div>
+        </div>
+        <div class="row">
+            <div class="text-center">
+                <div class="alert-feedback alert alert-warning" role="alert"></div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group text-end">
+                <button type="submit" class="btn btn-primary">Atualizar</button>
+            </div>
+        </div>
+    </form>
+</div>

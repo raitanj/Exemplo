@@ -1,0 +1,170 @@
+:root {
+    -webkit-text-stroke-width: thin;
+}
+
+.h1 {
+    /*Manter H1 invisível*/
+    height: 1px;
+    overflow: hidden;
+    width: 1px;
+    position: absolute;
+    clip: rect(1px 1px 1px 1px);
+    clip: rect(1px, 1px, 1px, 1px);
+    clip-path: inset(50%);
+    white-space: nowrap;
+}
+
+.container-login,
+.container-recuperar-conta,
+.container-redefinir-senha,
+.container-cadastro {
+    min-width: fit-content;
+    border: 1px gainsboro solid;
+}
+
+.container-login,
+.container-recuperar-conta,
+.container-redefinir-senha {
+    width: 40%;
+    margin: 10% auto 0 auto;
+}
+
+.card-menu-principal {
+    width: 16rem;
+    margin-left: 25px;
+    padding: 10px;
+    text-align: center;
+}
+
+.btn-light {
+    background-color: #E9ECEF;
+}
+
+.table {
+    text-align: center;
+    vertical-align: baseline;
+}
+
+.table-padrao-ifc,
+.table-padrao-ifc-sem-borda {
+    border-collapse: collapse;
+}
+
+.table-padrao-ifc thead,
+.table-padrao-ifc-sem-borda thead {
+    background-color: #C1E1C1;
+}
+
+.table-padrao-ifc td,
+.table-padrao-ifc th,
+.table-padrao-ifc-sem-borda td,
+.table-padrao-ifc-sem-borda th {
+    vertical-align: middle;
+}
+
+.table-padrao-ifc td {
+    border: solid 1px lightgray;
+}
+
+.table-padrao-ifc-sem-borda td {
+    border: 0;
+}
+
+/*1ª coluna*/
+.table-padrao-ifc td:first-child {
+    border-right: none;
+}
+
+/*2ª coluna*/
+.table-padrao-ifc td:nth-child(2) {
+    border-left: none;
+}
+
+/*Última coluna*/
+.table-padrao-ifc td:last-child {
+    border-left: none;
+    border-right: none;
+}
+
+/*Antepenúltima coluna*/
+.table-padrao-ifc td:nth-last-child(2) {
+    border-right: none;
+}
+
+.table-padrao-ifc select {
+    width: -webkit-fill-available;
+}
+
+nav .navbar-nav li a,
+.navbar-brand {
+    color: #0d6efd !important;
+}
+
+nav .navbar-nav li a:hover {
+    text-decoration: underline;
+}
+
+.alert-feedback {
+    display: none;
+    margin: 0 0 1rem 0;
+    padding: 4px;
+    font-weight: bold;
+}
+
+.form-group.required .control-label:after {
+    color: red;
+    content: " *";
+}
+
+.rounded-circle {
+    border: 2px black solid;
+}
+
+.modal-content {
+    width: -webkit-fill-available;
+}
+
+.modal-body {
+    text-align: justify;
+}
+
+.modal-footer {
+    justify-content: space-between;
+}
+
+/*Ao usar datepicker em um modal, é necessário trazê-lo para frente*/
+.ui-datepicker {
+    z-index: 9999 !important;
+}
+
+/*Remover bordas de container em smartphone*/
+@media screen and (max-width : 768px) {
+
+    .container-login,
+    .container-recuperar-conta,
+    .container-redefinir-senha,
+    .container-cadastro {
+        width: -webkit-fill-available;
+        border: 0;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .container-atualizar-cadastro {
+        flex-direction: column;
+    }
+}
+
+@media screen and (max-width: 1305px) {
+    .container-area-restrita {
+        flex-direction: column;
+    }
+}
+
+/*Fontes*/
+.fonte-label-1 {
+    font-family: "PT Sans", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 34px;
+}
