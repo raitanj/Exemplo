@@ -37,23 +37,23 @@ if (empty($_SESSION['logado']) || $_SESSION['logado'] === false) {
                     <div class="card-body">
                         <h5 class="card-title">Reserva de Salas</h5>
                         <p class="card-text">Sistema de reserva de salas do campus IFC Brusque</p>
-                        <a href="reserva-salas" class="btn btn-link shadow-none stretched-link" aria-label="Reserva de salas"></a>
+                        <a href="#" class="btn btn-link shadow-none stretched-link" aria-label="Imagem de menu da reserva de salas"></a>
                     </div>
                 </div>
                 <div class="card card-menu-principal">
-                    <img src="Imagens/Sistema/Menu Inicial - Imagem 2.png" class="card-img-top" alt="Reserva de salas">
+                    <img src="Imagens/Sistema/Menu Inicial - Imagem 2.png" class="card-img-top" alt="Imagem de menu do controle do restaurante">
                     <div class="card-body">
                         <h5 class="card-title">Restaurante</h5>
                         <p class="card-text">Sistema administrativo do restaurante do campus IFC Brusque</p>
-                        <a href="#" class="btn btn-link shadow-none stretched-link" aria-label="Reserva de salas"></a>
+                        <a href="#" class="btn btn-link shadow-none stretched-link" aria-label="Controle do restaurante"></a>
                     </div>
                 </div>
                 <div class="card card-menu-principal">
-                    <img src="Imagens/Sistema/Menu Inicial - Imagem 3.png" class="card-img-top" alt="Reserva de salas">
+                    <img src="Imagens/Sistema/Menu Inicial - Imagem 3.png" class="card-img-top" alt="Imagem de menu da reserva de veículos">
                     <div class="card-body">
                         <h5 class="card-title">Reserva de veículos</h5>
                         <p class="card-text">Sistema de reserva de veículos do campus IFC Brusque</p>
-                        <a href="#" class="btn btn-link shadow-none stretched-link" aria-label="Reserva de salas"></a>
+                        <a href="#" class="btn btn-link shadow-none stretched-link" aria-label="Reserva  de veículos"></a>
                     </div>
                 </div>
             </div>

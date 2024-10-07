@@ -51,16 +51,39 @@ function configurarEventos() {
         event.preventDefault();
         atualizarSenha();
     });
+
 }
 
 function carregarPainel(opcao) {
-
     const paginas = [
-        { url: "atualizar-cadastro-dados-gerais.html", func: carregarPessoa },
+        {
+            url: "atualizar-cadastro-dados-gerais.html",
+            funcs: [carregarPessoa, configurarDatepicker]
+        },
         { url: "atualizar-cadastro-email.html" },
         { url: "atualizar-cadastro-seguranca.html" }
     ];
-    $("#container-painel-dados").load(paginas[opcao].url, paginas[opcao].func);
+    $("#container-painel-dados").load(paginas[opcao].url, function () {
+        paginas[opcao].funcs.forEach(func => func());
+    });
+}
+
+function configurarDatepicker() {
+    const anoAtual = new Date().getFullYear();
+    const datepickerParams = {
+        dateFormat: "dd/mm/yy",
+        changeMonth: true,
+        changeYear: true,
+        yearRange: "1900:" + anoAtual,
+        minDate: new Date(1900, 0, 1),
+        maxDate: 0,
+        dayNames: ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado", "Domingo"],
+        dayNamesMin: ["D", "S", "T", "Q", "Q", "S", "S", "D"],
+        dayNamesShort: ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb", "Dom"],
+        monthNames: ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"],
+        monthNamesShort: ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"]
+    };
+    $("#data-nascimento").datepicker(datepickerParams);
 }
 
 function carregarPessoa() {
@@ -74,10 +97,9 @@ function carregarPessoa() {
         success: function (data) {
             $("#cpf").val(data["cpf"]);
             $("#cpf").mask("000.000.000-00");
-            $("#siape").val(data["siape"]);
-            siape_atual = data["siape"];
             email_atual = data["email"];
             $("#nome").val(data["nome"]);
+            $("#data-nascimento").mask("00/00/0000").val(moment(data["data_nascimento"]).format("DD/MM/YYYY"));
             switch (data["sexo"]) {
                 case "M":
                     $("#sexo-masculino").prop("checked", true);

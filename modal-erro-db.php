@@ -8,7 +8,7 @@
             <div class="modal-body">
                 <p><strong><font color="red">O sistema está offline!</font></strong></p>
                 <p>Favor entrar em contato com o setor de TI do IFC</p>
-                <p><b><font color="blue">E-mail:</font> raitan.rigon@ifc.edu.br</b></p>
+                <p><b><font color="blue">E-mail:</font> email@dominio.com.br</b></p>
             </div>
             <div class="modal-footer">
             </div>

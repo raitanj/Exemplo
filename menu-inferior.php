@@ -7,6 +7,6 @@
     </section>
   </div>
   <div class="text-center p-3">
-    © Site desenvolvido pelo setor de Tecnologia da Informação do Campus Brusque
+    © Site desenvolvido pelo setor de Tecnologia da Informação
   </div>
 </footer>

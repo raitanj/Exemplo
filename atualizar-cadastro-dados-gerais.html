@@ -12,13 +12,17 @@
             </div>
         </div>
         <div class="row">
-            <div class="form-group mb-3 col-sm-4">
+            <div class="form-group required mb-3 col-sm-2">
                 <label for="cpf" class="control-label">CPF</label>
-                <input type="text" class="form-control" id="cpf" name="cpf" maxlength="11" disabled>
+                <input type="text" class="form-control" id="cpf" name="cpf" maxlength="11" required>
             </div>
-            <div class="form-group mb-3 col-sm-4">
-                <label for="siape" class="control-label">Siape</label>
-                <input type="text" class="form-control" id="siape" name="siape" maxlength="7" disabled>
+            <div class="form-group mb-3 col-sm-2">
+                <label for="data-nascimento" class="control-label">Data de nascimento</label>
+                <div class="input-group">
+                    <input type="text" class="form-control" name="data-nascimento" id="data-nascimento"
+                        aria-label="Seleção de data de nascimento"/>
+                    <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                </div>
             </div>
         </div>
         <div class="row">

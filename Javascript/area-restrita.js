@@ -2,7 +2,7 @@ const feedbackAtualizarPessoa = {
     1: "Erro! CPF inválido",
     2: "Erro! CPF já cadastrado",
     3: "Erro! E-mail já cadastrado",
-    4: "Erro! SIAPE já cadastrado",
+    4: "Erro! Data de nascimento inválida",
     5: "Erro! Cargo inválido",
     6: "Erro! Nome muito longo"
 };
@@ -31,6 +31,8 @@ function configurarEventos() {
         $(this).mask("000.000.000-00");
     });
 
+    $(document).on("click", "#tabela-listar-pessoas button", atualizarPessoa);
+
 }
 
 function carregarPainel(opcao) {
@@ -51,7 +53,8 @@ function carregarTabelaPessoas() {
         success: function (data) {
             $("#tabela-listar-pessoas tbody").html(data);
             $(".cpf").mask("000.000.000-00");
-            $(".siape").mask("0000000");
+            $(".data-nascimento").mask("00/00/0000").val(moment("2000-01-01").format("DD/MM/YYYY"));
+            //configurarDatepicker();
         },
         complete: carregarTabelaComboBoxPessoas,
         error: data => $("#modal-erro").modal("show")
@@ -77,6 +80,26 @@ function carregarTabelaComboBoxPessoas() {
     });
 }
 
+function configurarDatepicker() {
+    const anoAtual = new Date().getFullYear();
+    $(".data-nascimento").mask("00/00/0000").val(moment("2000-01-01").format("DD/MM/YYYY"));
+
+    const datepickerParams = {
+        dateFormat: "dd/mm/yy",
+        changeMonth: true,
+        changeYear: true,
+        yearRange: "1900:" + anoAtual,
+        minDate: new Date(1900, 0, 1),
+        maxDate: 0,
+        dayNames: ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado", "Domingo"],
+        dayNamesMin: ["D", "S", "T", "Q", "Q", "S", "S", "D"],
+        dayNamesShort: ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb", "Dom"],
+        monthNames: ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"],
+        monthNamesShort: ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"]
+    };
+    $(".data-nascimento").datepicker(datepickerParams);
+}
+
 function atualizarPessoa() {
     const linha = $(this).closest("tr");
     const data = linha.find("td").map((i, el) => $(el).text()).get();
@@ -91,7 +114,7 @@ function atualizarPessoa() {
             nome: data[1],
             cpf: data[3],
             email: data[4],
-            siape: data[5],
+            data_nascimento: data[5],
             sexo: linha.find("td:eq(6) select option:selected").text(),
             cargo: linha.find("td:eq(7) select option:selected").text()
         },

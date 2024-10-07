@@ -1,6 +1,5 @@
 $(document).ready(function () {
     $("#cpf").mask("000.000.000-00");
-    $("#data-nascimento").mask("00/00/0000").val(moment(dataSelecionada).format("DD/MM/YYYY"));
     carregarCargos();
     configurarEventos();
 });
@@ -27,10 +26,6 @@ function configurarEventos() {
         verificarDisponibilidadeCPF();
     });
 
-    $("#siape").change(function () {
-        verificarDisponibilidadeSiape();
-    });
-
     $("#email").change(function () {
         verificarDisponibilidadeEmail();
     });
@@ -39,6 +34,28 @@ function configurarEventos() {
         event.preventDefault();
         cadastrarPessoa();
     });
+
+    configurarDatepicker();
+}
+
+function configurarDatepicker() {
+    const anoAtual = new Date().getFullYear();
+    $("#data-nascimento").mask("00/00/0000").val(moment("2000-01-01").format("DD/MM/YYYY"));
+
+    const datepickerParams = {
+        dateFormat: "dd/mm/yy",
+        changeMonth: true,
+        changeYear: true,
+        yearRange: "1900:" + anoAtual,
+        minDate: new Date(1900, 0, 1),
+        maxDate: 0,
+        dayNames: ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado", "Domingo"],
+        dayNamesMin: ["D", "S", "T", "Q", "Q", "S", "S", "D"],
+        dayNamesShort: ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb", "Dom"],
+        monthNames: ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"],
+        monthNamesShort: ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"]
+    };
+    $("#data-nascimento").datepicker(datepickerParams);
 }
 
 function carregarCargos() {
@@ -76,49 +93,9 @@ function verificarDisponibilidadeCPF() {
     });
 }
 
-function verificarDisponibilidadeSiape() {
-    const siape = $("#siape").val();
-
-    if (siape.length != 7) {
-        $("#siape")[0].setCustomValidity("Siape precisa ter 7 dígitos.");
-        return;
-    } else {
-        $("#siape")[0].setCustomValidity("");
-    }
-
-    $.ajax({
-        dataType: "json",
-        type: "GET",
-        url: "crud",
-        data: {
-            opcao: "s4",
-            siape: siape
-        },
-        success: function (siapeDisponivel) {
-            $("#siape")[0].setCustomValidity(siapeDisponivel ? "" : "Siape já cadastrado.");
-        },
-        error: data => $("#modal-erro").modal("show")
-    });
-}
-
-function verificarDisponibilidadeEmail() {
-    $.ajax({
-        dataType: "json",
-        type: "GET",
-        url: "crud",
-        data: {
-            opcao: "s3",
-            email: $("#email").val()
-        },
-        success: function (emailDisponivel) {
-            $("#email")[0].setCustomValidity(emailDisponivel ? "" : "E-mail já cadastrado.");
-        },
-        error: data => $("#modal-erro").modal("show")
-    });
-}
-
 function verificarCPF() {
     const cpf = $("#cpf").val().trim().replace(/\D/g, ""); //Remove caracteres não numéricos
+
     if (cpf.length == 11) {
         let v1 = 0;
         let v2 = 0;
@@ -163,25 +140,20 @@ function verificarCPF() {
     }
 }
 
-function configurarDatepickers() {
-
-    $("#aulas-data-inicial, #aulas-data-final").mask("00/00/0000").val(moment().format("DD/MM/YYYY"));
-
-    const datepickerParams = {
-        dateFormat: "dd/mm/yy",
-        changeMonth: true,
-        changeYear: true,
-        yearRange: "1900:2024",
-        minDate: new Date(2024, 0, 1),
-        maxDate: new Date(2025, 11, 31),
-        dayNames: ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado", "Domingo"],
-        dayNamesMin: ["D", "S", "T", "Q", "Q", "S", "S", "D"],
-        dayNamesShort: ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb", "Dom"],
-        monthNames: ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"],
-        monthNamesShort: ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"]
-    };
-
-    $("#aulas-data-inicial").datepicker(datepickerParams);
+function verificarDisponibilidadeEmail() {
+    $.ajax({
+        dataType: "json",
+        type: "GET",
+        url: "crud",
+        data: {
+            opcao: "s3",
+            email: $("#email").val()
+        },
+        success: function (emailDisponivel) {
+            $("#email")[0].setCustomValidity(emailDisponivel ? "" : "E-mail já cadastrado.");
+        },
+        error: data => $("#modal-erro").modal("show")
+    });
 }
 
 function validarSenhas() {
@@ -191,10 +163,11 @@ function validarSenhas() {
 }
 
 function cadastrarPessoa() {
-    $.when(verificarDisponibilidadeCPF(), verificarDisponibilidadeSiape(), verificarDisponibilidadeEmail()).done(function () {
+    $.when(verificarDisponibilidadeCPF(), verificarDisponibilidadeEmail()).done(function () {
         const form = $("#form");
         const formData = new FormData(form[0]);
         formData.append("imagem", $("input[type=file]")[0]?.files[0]);
+        formData.set("data-nascimento", moment($("#data-nascimento").val(), "DD/MM/YYYY").format("YYYY-MM-DD"));
         $.ajax({
             dataType: "json",
             type: "POST", //Arquivo sempre precisa ser POST

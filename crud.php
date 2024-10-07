@@ -80,6 +80,10 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'
             }
             break;
 
+        case "s2": //Verificar login na sessão
+            $resposta = verificarLogin();
+            break;
+
         case "s3": //Verificar se e-mail é único
             $email = filter_input(INPUT_GET, 'email');
             $resposta = false;
@@ -88,60 +92,6 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'
                 $resultado = executarQueryComRetorno($conexao, $sql, "s", [$email]);
                 if ($resultado && $resultado->num_rows == 0) {
                     $resposta = true;
-                }
-            }
-            break;
-
-        case "s4": //Verificar se siape é único
-            $siape = filter_input(INPUT_GET, 'siape');
-            $resposta = false;
-            if (!empty($siape)) {
-                $sql = "SELECT siape FROM pessoa WHERE siape=?";
-                $resultado = executarQueryComRetorno($conexao, $sql, "s", [$siape]);
-                if ($resultado && $resultado->num_rows == 0) {
-                    $resposta = true;
-                }
-            }
-            break;
-
-        case "s5": //SELECT dados de cadastro de usuário para alteração
-            session_start();
-            $resultado = $conexao->query("SELECT cpf, email, nome, sexo, siape, IF(imagem IS NULL OR imagem = '', '', CONCAT('" . PASTA_IMAGENS_PESSOAS . "',imagem)) as imagem FROM pessoa WHERE idPessoa = {$_SESSION['idPessoa']}");
-            $resposta =  mysqli_fetch_assoc($resultado);
-            break;
-
-        case "s6": //SELECT cargos
-            $sql = "SELECT idCargo, nome FROM cargo ORDER BY nome ASC";
-            $resultado = $conexao->query($sql);
-            while (($linha = mysqli_fetch_assoc($resultado))) {
-                $resposta .= "<option value='{$linha['idCargo']}'>{$linha['nome']}</option>";
-            }
-            break;
-
-        case "s7": //SELECT lista de usuários
-            session_start();
-            if ($_SESSION['administrador'] === 1) {
-                $sql = "SELECT p.idPessoa, p.nome, p.cpf, p.email, p.siape, p.sexo, IF(imagem IS NULL OR imagem = '', '', CONCAT('" . PASTA_IMAGENS_PESSOAS . "',imagem)) as imagem, c.nome AS cargo FROM pessoa p INNER JOIN cargo c ON c.idCargo = p.cargo_idCargo ORDER BY p.nome ASC";
-                $resultado = $conexao->query($sql);
-                while (($linha = mysqli_fetch_assoc($resultado))) {
-
-                    $imagem = !empty($linha['imagem'])
-                        ? "<a href='{$linha['imagem']}' target='_blank'><i class='fa-solid fa-image'></i></a>"
-                        : "<i class='fa-solid fa-image'></i>";
-
-                    $resposta .=
-                        "<tr>
-                            <td class='d-none'>{$linha['idPessoa']}</td>
-                            <td contenteditable='true'>{$linha['nome']}</td>
-                            <td>$imagem</td>
-                            <td contenteditable='true' class='cpf'>{$linha['cpf']}</td>
-                            <td contenteditable='true'>{$linha['email']}</td>
-                            <td contenteditable='true' class='siape'>{$linha['siape']}</td>
-                            <td><select class='form-select text-center bg-transparent border-0' name='sexo' aria-label='Seleção de sexo'><option value='' hidden>{$linha['sexo']}</option></select></td>
-                            <td><select class='form-select text-center bg-transparent border-0' name='cargo' aria-label='Seleção de cargo'><option value='' hidden>{$linha['cargo']}</option></select></td>
-                            <td><button class='btn btn-outline-primary btn-salvar-edicao-usuario'>Salvar</button></td>
-                            <td><div class='alert-feedback alert-success alert-dismissible mb-0' style='white-space: nowrap;'></div></td>
-                        </tr>";
                 }
             }
             break;
@@ -160,8 +110,46 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'
             }
             break;
 
-        case "s2": //Verificar login na sessão
-            $resposta = verificarLogin();
+        case "s5": //SELECT dados de cadastro de usuário para alteração
+            session_start();
+            $resultado = $conexao->query("SELECT cpf, nome, email, data_nascimento, sexo, IF(imagem IS NULL OR imagem = '', '', CONCAT('" . PASTA_IMAGENS_PESSOAS . "', imagem)) as imagem FROM pessoa WHERE idPessoa = {$_SESSION['idPessoa']}");
+            $resposta =  mysqli_fetch_assoc($resultado);
+            break;
+
+        case "s6": //SELECT cargos
+            $sql = "SELECT idCargo, nome FROM cargo ORDER BY nome ASC";
+            $resultado = $conexao->query($sql);
+            while (($linha = mysqli_fetch_assoc($resultado))) {
+                $resposta .= "<option value='{$linha['idCargo']}'>{$linha['nome']}</option>";
+            }
+            break;
+
+        case "s7": //SELECT lista de usuários
+            session_start();
+            if ($_SESSION['administrador'] === 1) {
+                $sql = "SELECT p.idPessoa, p.nome, p.cpf, p.email, p.data_nascimento, p.sexo, IF(imagem IS NULL OR imagem = '', '', CONCAT('" . PASTA_IMAGENS_PESSOAS . "', imagem)) as imagem, c.nome AS cargo FROM pessoa p INNER JOIN cargo c ON c.idCargo = p.cargo_idCargo ORDER BY p.nome ASC";
+                $resultado = $conexao->query($sql);
+                while (($linha = mysqli_fetch_assoc($resultado))) {
+
+                    $imagem = !empty($linha['imagem'])
+                        ? "<a href='{$linha['imagem']}' target='_blank'><i class='fa-solid fa-image'></i></a>"
+                        : "<i class='fa-solid fa-image'></i>";
+
+                    $resposta .=
+                        "<tr>
+                            <td class='d-none'>{$linha['idPessoa']}</td>
+                            <td contenteditable='true'>{$linha['nome']}</td>
+                            <td>$imagem</td>
+                            <td contenteditable='true' class='cpf'>{$linha['cpf']}</td>
+                            <td contenteditable='true'>{$linha['email']}</td>
+                            <td contenteditable='true' class='data-nascimento'>{$linha['data_nascimento']}</td>
+                            <td><select class='form-select text-center bg-transparent border-0' name='sexo' aria-label='Seleção de sexo'><option value='' hidden>{$linha['sexo']}</option></select></td>
+                            <td><select class='form-select text-center bg-transparent border-0' name='cargo' aria-label='Seleção de cargo'><option value='' hidden>{$linha['cargo']}</option></select></td>
+                            <td><button class='btn btn-outline-primary btn-salvar-edicao-usuario'>Salvar</button></td>
+                            <td><div class='alert-feedback alert-success alert-dismissible mb-0' style='white-space: nowrap;'></div></td>
+                        </tr>";
+                }
+            }
             break;
 
         case "i1": //INSERT Usuário
@@ -176,13 +164,13 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'
             $sexo = isset($_POST['sexo']) ? trim(htmlspecialchars($_POST['sexo'], ENT_QUOTES, 'UTF-8')) : "";
             $senha = password_hash($_POST['senha1'], PASSWORD_DEFAULT);
             $nome = trim(preg_replace('/\s\s+/', ' ', str_replace("\n", " ", htmlspecialchars($_POST['nome'], ENT_QUOTES, 'UTF-8'))));
-            $siape = filter_input(INPUT_POST, 'siape', FILTER_VALIDATE_INT);
+            $data_nascimento = trim(htmlspecialchars($_POST['data-nascimento'], ENT_QUOTES, 'UTF-8'));
             $administrador = 0;
             $idCargo = filter_input(INPUT_POST, 'cargo', FILTER_VALIDATE_INT);
 
             $resposta = array(true);
 
-            if (verificarCpf($cpf) ||  ($siape !== false && strlen($siape) !== 7)) {
+            if (verificarCpf($cpf)) {
                 break;
             }
 
@@ -190,8 +178,8 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'
                 $sexo = "";
             }
 
-            $sql = "INSERT INTO pessoa(cpf, email, senha, nome, siape, sexo, administrador, cargo_idCargo) VALUES (?,?,?,?,?,?,?,?)";
-            if (executarQuery($conexao, $sql, "ssssssii", [$cpf, $email, $senha, $nome, $siape, $sexo, $administrador, $idCargo])) {
+            $sql = "INSERT INTO pessoa(cpf, nome, email, senha, data_nascimento, sexo, administrador, cargo_idCargo) VALUES (?,?,?,?,?,?,?,?)";
+            if (executarQuery($conexao, $sql, "ssssssii", [$cpf, $nome, $email, $senha, $data_nascimento, $sexo, $administrador, $idCargo])) {
                 $arquivo_imagem = $_FILES;
                 $resposta = array(false);
                 array_push($resposta, verificarImagem($conexao, $arquivo_imagem, $cpf)); //Verificar arquivo de imagem após cadastro
@@ -329,7 +317,7 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'
                 $idPessoa = filter_input(INPUT_POST, 'id', FILTER_VALIDATE_INT);
                 $nome = trim(preg_replace('/\s\s+/', ' ', str_replace("\n", " ", htmlspecialchars($_POST['nome'], ENT_QUOTES, 'UTF-8'))));
                 $cpf = trim(preg_replace('/[^0-9]/', '', htmlspecialchars($_POST['cpf'], ENT_QUOTES, 'UTF-8')));
-                $siape = filter_input(INPUT_POST, 'siape', FILTER_VALIDATE_INT);
+                $data_nascimento = trim(htmlspecialchars($_POST['data_nascimento'], ENT_QUOTES, 'UTF-8'));
                 $email = trim(filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL));
                 $sexo = isset($_POST['sexo']) ? htmlspecialchars($_POST['sexo'], ENT_QUOTES, 'UTF-8') : "";
                 $cargo = filter_input(INPUT_POST, 'cargo', FILTER_VALIDATE_INT);
@@ -349,9 +337,9 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'
                     $resposta = array(true, 3); //E-mail duplicado
                 }
 
-                $sql = "UPDATE pessoa SET siape=? WHERE idPessoa=?";
-                if (!executarQuery($conexao, $sql, "si", [$siape, $idPessoa])) {
-                    $resposta = array(true, 4); //Siape duplicado
+                $sql = "UPDATE pessoa SET data_nascimento=? WHERE idPessoa=?";
+                if (!executarQuery($conexao, $sql, "si", [$data_nascimento, $idPessoa])) {
+                    $resposta = array(true, 4); //Data de nascimento inválida
                 }
 
                 $resultado = executarQueryComRetorno($conexao, "SELECT idCargo FROM cargo WHERE nome=?", "s", [$cargo]);
