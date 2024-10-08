@@ -54,7 +54,7 @@ function carregarTabelaPessoas() {
             $("#tabela-listar-pessoas tbody").html(data);
             $(".cpf").mask("000.000.000-00");
             $(".data-nascimento").mask("00/00/0000").val(moment("2000-01-01").format("DD/MM/YYYY"));
-            //configurarDatepicker();
+            configurarDatepicker();
         },
         complete: carregarTabelaComboBoxPessoas,
         error: data => $("#modal-erro").modal("show")
@@ -82,27 +82,27 @@ function carregarTabelaComboBoxPessoas() {
 
 function configurarDatepicker() {
     const anoAtual = new Date().getFullYear();
-    $(".data-nascimento").mask("00/00/0000").val(moment("2000-01-01").format("DD/MM/YYYY"));
-
-    const datepickerParams = {
+    $(".data-nascimento").datepicker({
         dateFormat: "dd/mm/yy",
         changeMonth: true,
         changeYear: true,
-        yearRange: "1900:" + anoAtual,
+        yearRange: `1900:${anoAtual}`,
         minDate: new Date(1900, 0, 1),
         maxDate: 0,
-        dayNames: ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado", "Domingo"],
-        dayNamesMin: ["D", "S", "T", "Q", "Q", "S", "S", "D"],
-        dayNamesShort: ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb", "Dom"],
+        dayNames: ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"],
+        dayNamesMin: ["D", "S", "T", "Q", "Q", "S", "S"],
+        dayNamesShort: ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"],
         monthNames: ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"],
         monthNamesShort: ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"]
-    };
-    $(".data-nascimento").datepicker(datepickerParams);
+    });
 }
 
 function atualizarPessoa() {
     const linha = $(this).closest("tr");
-    const data = linha.find("td").map((i, el) => $(el).text()).get();
+    const data = linha.find("td").map((i, el) => {
+        const input = $(el).find('input').length ? $(el).find('input').val() : $(el).find('select').val() || $(el).text();
+        return input;
+    }).get();
 
     $.ajax({
         dataType: "json",

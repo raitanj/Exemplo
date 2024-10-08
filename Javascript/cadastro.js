@@ -22,13 +22,9 @@ function configurarEventos() {
 
     $("#senha1, #senha2").on("input", validarSenhas);
 
-    $("#cpf").change(function () {
-        verificarDisponibilidadeCPF();
-    });
+    $("#cpf").on("change", verificarDisponibilidadeCPF);
 
-    $("#email").change(function () {
-        verificarDisponibilidadeEmail();
-    });
+    $("#email").on("change", verificarDisponibilidadeEmail);
 
     $("#form").on("submit", function (event) {
         event.preventDefault();
@@ -74,9 +70,7 @@ function carregarCargos() {
 function verificarDisponibilidadeCPF() {
     const cpf = $("#cpf").val();
 
-    if (!verificarCPF()) {
-        return;
-    }
+    if (!verificarCPF) return;
 
     $.ajax({
         dataType: "json",

@@ -31,9 +31,7 @@ function configurarEventos() {
         }
     });
 
-    $(document).on("change", "#email", function () {
-        verificarDisponibilidadeEmail();
-    });
+    $(document).on("change", "#email", () => verificarDisponibilidadeEmail());
 
     $(document).on("input", "#senha1, #senha2", validarSenhas);
 
@@ -83,7 +81,7 @@ function configurarDatepicker() {
         monthNames: ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"],
         monthNamesShort: ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"]
     };
-    $("#data-nascimento").datepicker(datepickerParams);
+    $(".data-nascimento").datepicker(datepickerParams);
 }
 
 function carregarPessoa() {

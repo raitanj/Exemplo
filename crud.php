@@ -142,7 +142,7 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'
                             <td>$imagem</td>
                             <td contenteditable='true' class='cpf'>{$linha['cpf']}</td>
                             <td contenteditable='true'>{$linha['email']}</td>
-                            <td contenteditable='true' class='data-nascimento'>{$linha['data_nascimento']}</td>
+                            <td class='data-nascimento'><input type='text' class=' data-nascimento form-control bg-transparent border-0' name='data-nascimento' aria-label='Seleção de data de nascimento' value='{$linha['data_nascimento']}'/></td>
                             <td><select class='form-select text-center bg-transparent border-0' name='sexo' aria-label='Seleção de sexo'><option value='' hidden>{$linha['sexo']}</option></select></td>
                             <td><select class='form-select text-center bg-transparent border-0' name='cargo' aria-label='Seleção de cargo'><option value='' hidden>{$linha['cargo']}</option></select></td>
                             <td><button class='btn btn-outline-primary btn-salvar-edicao-usuario'>Salvar</button></td>
